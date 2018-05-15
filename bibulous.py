@@ -15,6 +15,7 @@ import getopt       ## for getting command-line options
 import copy         ## for the "deepcopy" command
 import platform     ## for determining the OS of the system
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+from six import string_types
 #import traceback    ## for getting full traceback info in exceptions
 
 '''
@@ -55,6 +56,10 @@ The basic program flow upon object initialization is as follows:
 #       pdb.pm()
 #       #traceback.print_stack()
 #sys.excepthook = info      ## go into debugger automatically on an exception
+
+#Fix python3:
+try:    unicode('testing')
+except NameError:   unicode = str
 
 __authors__ = 'Nathan Hagen'
 __license__ = 'MIT/X11 License'
@@ -1445,7 +1450,7 @@ class Bibdata(object):
             entries to the database file.
         '''
 
-        if not isinstance(searchname, basestring):
+        if not isinstance(searchname, string_types):
             raise TypeError('The input search name ["' + unicode(searchname) + '"] is not a valid string.')
         if not outputfile:
             outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
@@ -1648,7 +1653,7 @@ class Bibdata(object):
         bibres = None
         bstres = None
 
-        if isinstance(filename, basestring) and filename.endswith('.aux'):
+        if isinstance(filename, string_types) and filename.endswith('.aux'):
             auxfile = os.path.normpath(os.path.abspath(filename))
             path = os.path.normpath(os.path.dirname(auxfile))
 
@@ -1723,7 +1728,7 @@ class Bibdata(object):
                 bstfiles[i] = os.path.normpath(bstfiles[i])
 
         ## Or if the input is only a BIB file, then go off of that.
-        elif isinstance(filename, basestring) and filename.endswith('.bib'):
+        elif isinstance(filename, string_types) and filename.endswith('.bib'):
             self.culldata = False
             bibfiles = [os.path.normpath(filename)]
 
@@ -4241,7 +4246,7 @@ def export_bibfile(bibdata, filename, abbrevs=None):
         The dictionary of abbreviations to write to the BIB file.
     '''
 
-    assert isinstance(filename, basestring), 'Input "filename" must be a string.'
+    assert isinstance(filename, string_types), 'Input "filename" must be a string.'
     filehandle = codecs.open(filename, 'w', 'utf-8')
 
     if ('preamble' in bibdata):
