@@ -1119,18 +1119,27 @@ class Bibdata(object):
 
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
-            filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
-            filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n".encode('utf-8'))
-            filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n'.encode('utf-8'))
-            filehandle.write('\\providecommand{\\href}[2]{#2}\n'.encode('utf-8'))
+            filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n')
+            filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n")
+            filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n')
+            filehandle.write('\\providecommand{\\href}[2]{#2}\n')
+
+            # filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
+            # filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n".encode('utf-8'))
+            # filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n'.encode('utf-8'))
+            # filehandle.write('\\providecommand{\\href}[2]{#2}\n'.encode('utf-8'))
             if (self.options['bibitemsep'] != None):
                 s = '\\setlength{\\itemsep}{' + self.options['bibitemsep'] + '}\n'
-                filehandle.write(s.encode('utf-8'))
+                # filehandle.write(s.encode('utf-8'))
+                filehandle.write(s)
+
 
             if ('preamble' in self.bibdata):
-                filehandle.write(self.bibdata['preamble'].encode('utf-8'))
+                # filehandle.write(self.bibdata['preamble'].encode('utf-8'))
+                filehandle.write(self.bibdata['preamble'])
 
-            filehandle.write('\n\n'.encode('utf-8'))
+            # filehandle.write('\n\n'.encode('utf-8'))
+            filehandle.write('\n\n')
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
@@ -1173,7 +1182,8 @@ class Bibdata(object):
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
-                    filehandle.write((s + '\n\n').encode('utf-8'))
+                    # filehandle.write((s + '\n\n').encode('utf-8'))
+                    filehandle.write((s + '\n\n'))
         except Exception as this_exception:
             if debug:
                 raise Exception(this_exception)
@@ -1181,7 +1191,8 @@ class Bibdata(object):
             print('Exception encountered: ' + repr(this_exception))
         finally:
             if write_postamble:
-                filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
+                # filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
+                filehandle.write('\n\\end{thebibliography}\n')
             filehandle.close()
 
         return
@@ -1603,7 +1614,8 @@ class Bibdata(object):
         filehandle = open(filename, 'w')
 
         for entry in self.bibdata:
-            filehandle.write('\\citation{' + entry + '}\n'.encode('utf-8'))
+            # filehandle.write('\\citation{' + entry + '}\n'.encode('utf-8'))
+            filehandle.write('\\citation{' + entry + '}\n')
 
         filehandle.write('\n')
         filehandle.write('\\bibdata{')
@@ -1659,7 +1671,8 @@ class Bibdata(object):
 
             s = open(filename, 'rU')
             for line in s.readlines():
-                line = line.decode('utf-8').strip()
+                # line = line.decode('utf-8').strip()
+                line = line.strip()
                 if line.startswith('%'): continue
                 if line.startswith('\\bibdata{'):
                     line = line[9:]
@@ -3035,7 +3048,7 @@ def stringsplit(s, sep=r' |(?<!\\)~'):
             tokens.append(s[:indices[0][0]])
 
         ## Go through each match's indices and split the string at each.
-        for n in xrange(ntokens):
+        for n in range(ntokens):
             if (n == ntokens-1):
                 j = indices[n][1]            ## the end of *this* separator
                 tokens.append(s[j:])
@@ -3117,7 +3130,7 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
                 names.append(namefield[:separators[0][0]].strip())
 
             ## Go through each match's indices and split the string at each.
-            for n in xrange(num_names):
+            for n in range(num_names):
                 if (n == num_names-1):
                     j = separators[n][1]            ## the end of *this* separator
                     names.append(namefield[j:].strip())
@@ -3950,7 +3963,7 @@ def brace_split(string, splitter=" "):
         splits.append(string[:separators[0][0]].strip())
 
     ## Go through each match's indices and split the string at each.
-    for n in xrange(num_splits):
+    for n in range(num_splits):
         if (n == num_splits-1):
             j = separators[n][1]            ## the end of *this* separator
             splits.append(string[j:].strip())
@@ -4921,7 +4934,8 @@ def to_int_or_locale(text):
     try:
        return int(text)
     except ValueError:
-       return locale.strxfrm(text.encode('utf-8'))
+       # return locale.strxfrm(text.encode('utf-8'))
+       return locale.strxfrm(text)
 
 ## =============================
 def natural_keys(text):
