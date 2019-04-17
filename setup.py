@@ -16,6 +16,7 @@ setup(
     keywords = ["bibtex", "bibliography", "parser", "tex", "latex"],
     classifiers = [
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.7",
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
